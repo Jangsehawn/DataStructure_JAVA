@@ -1,0 +1,30 @@
+package data_day2;
+import java.util.Scanner;
+public class Fibonacci {
+	public int fibonacci(int n) {
+        int a=1; //답
+        int a1=0;
+        int a2=1;
+        for(int i=2; i<=n; i=i+1) {
+        	if (n<0){
+            	continue;
+            }
+            if (n<=1) {
+            	return n;
+            }
+        	a=a1+a2;
+        	a1=a2;
+        	a2=a;
+        }
+        return a;
+    }
+
+	public static void main(String[] args) {
+		Fibonacci myTest = new Fibonacci();
+		int n = 13;
+        int a=myTest.fibonacci(n);
+        System.out.println(a);
+
+	}
+
+}
