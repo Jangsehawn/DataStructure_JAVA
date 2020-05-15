@@ -1,0 +1,70 @@
+package data_day5;
+
+public class MatrixCalculator {
+
+	public static void main(String[] args) {
+		MatrixCalculator answer1=new MatrixCalculator();
+		MatrixCalculator answer2=new MatrixCalculator();
+		MatrixCalculator answer3=new MatrixCalculator();
+		int matA[][]= {{1,4,7},{2,5,8},{3,6,9}};
+		int matB[][]= {{11,14,17},{12,15,18},{13,16,19}};
+		int matC[][]= {{10,1},{10,1},{10,1}};
+		//A+B
+		System.out.println(answer1.addMat(matA, matB));
+		//C*A
+		System.out.println(answer2.projMat(matA, matC));
+		//t(A)
+		System.out.println(answer3.transMat(matA));
+		
+	}
+	public int[][] addMat(int[][] A,int[][] B ) {
+		int[][] answer =new int[A.length][A.length];
+	       for(int i=0;i<A.length;i++) {
+	    	   for(int j=0;j<A.length;j++) {
+	    			   answer[i][j]=A[i][j]+B[i][j];
+	    	   }
+	       }
+	       
+	       for (int i = 0; i < answer.length; i++) {
+          for (int j = 0; j < answer[i].length; j++) {
+              System.out.print(answer[i][j] + " "); // 열 출력
+          }
+          System.out.println(); // 행 출력
+      }
+	       return answer;
+	}	
+	public int[][] projMat(int[][] A, int[][] B) {
+	       int[][] answer =new int[A.length][B[0].length];
+	       for(int i=0;i<answer.length;i++) {
+	    	   for(int j=0;j<answer[0].length;j++) {
+	    		   for(int k=0; k<A[0].length;k++){
+	    			   answer[i][j]+=A[i][k]*B[k][j];
+	    		   }
+	    	   }
+	       }
+	       
+	       for (int i = 0; i < answer.length; i++) {
+             for (int j = 0; j < answer[i].length; j++) {
+                 System.out.print(answer[i][j] + " "); // 열 출력
+             }
+             System.out.println(); // 행 출력
+         }
+	       return answer;  
+	       
+    }
+	public int[][] transMat(int[][] A ) {
+		int[][] answer= new int[A.length][A.length];
+		for(int i=0;i<answer.length;i++) {
+	    	   for(int j=0;j<answer.length;j++) {
+	    		   answer[i][j]+=A[i][j];
+		       }
+	    }
+		for (int i = 0; i < answer.length; i++) {
+            for (int j = 0; j < answer[i].length; j++) {
+                System.out.print(answer[i][j] + " "); // 열 출력
+            }
+            System.out.println(); // 행 출력
+        }
+		return answer;
+    }
+}
