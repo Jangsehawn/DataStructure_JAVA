@@ -1,0 +1,95 @@
+
+class ListNode{
+	private String data;
+	public ListNode link;
+	public ListNode() {
+		this.data=null;
+		this.link=null;
+	}
+	public ListNode(String data) {
+		this.data=data;
+		this.link=null;
+	}
+	public ListNode(String data, ListNode link) {
+		this.data=data;
+		this.link=link;
+	}
+	public String getData() {
+		return this.data;
+	}
+}
+
+class LinkedList{
+	private ListNode head;
+	public LinkedList() {
+		head=null;
+	}
+	public void insertMiddleNode(ListNode pre, String data) {
+		ListNode newNode= new ListNode(data);
+		newNode.link= pre.link;
+		pre.link = newNode;
+	}
+	public void insertLastNode(String data) {
+		ListNode newNode = new ListNode(data);
+		if(head==null) {//리스트가 공백 리스트일경우 새 노드를 삽입
+			this.head=newNode;//노드삽입
+		}else {//리스트가 공백리스트가 아님
+			ListNode temp=head;//마지막 노드를 찾기위해 임시 참조변수 temp에 리스트의 첫번째 노드주소 지정
+			while(temp.link!=null) temp=temp.link;// while문을 통해 link값이 null인 맨 마지막 노드 찾음
+			temp.link=newNode;//노드삽입
+		}
+	}
+	public void deletelastNode() {
+		ListNode pre,temp;//임시 참조변수
+		if(head==null) return;//공백리스트일 경우에는 삭제할게 없으므로 바로 반환
+		if(head.link==null) {//마지막 노드인경우에
+			head=null;//노드에 널값 대입해 삭제
+		}else {
+			pre=head;// 첫번째 노드의 주소 대입
+			temp=head.link;// pre가 가르키는 노드의 다음노드의 주소대입
+			while(temp.link !=null) {//마지막 노드 찾음
+				pre=temp;// 마지막 노드의 주소값 pre에 대입
+				temp=temp.link;//마지막 노드일때 temp.link는 null, 마지막 노드가 아닐때 temp.link는 다음 노드 주소값 
+			}
+			pre.link=null;//pre가 가리키고 있는 주소(마지막 노드)에 null값 대입(삭제)
+		}
+	}
+	public ListNode searchNode(String data) {//리스트 노드로 돌려줬기 때문에 리스트노드로 넣어줘야 반환함 
+		ListNode temp=this.head;//temp는 노드주소 , head는 첫번째 노드 주소값
+		while(temp!=null) {//마지막 노드까지 돌려봄
+			if(data==temp.getData())//temp는 주소값이므로 getdata로 데이터 반환하여 data와 비교
+				                    // 또 문자열끼리 비교할떄 비교연신지를 .equals() 가 더 좋음
+				                   //==은 안먹을수도 있음 ex)-> data.equals((temp.getData())
+				return temp;//같으면 주소값 	반환
+			else temp = temp.link;//아니면 다음주소 입력
+		}
+		return temp;//위에서 안나오는 경우 마지막노드이므로 마지막꺼 반환, 마지막꺼는 null값가짐
+	}
+    public void reverseList() {//next,current,pre는 임시 참조변수 
+    	//next : 다음 처리될 노드, 처리 중인 노드 다음 것, 완료 후 처리 중인 노드 앞 노드가 될 것임
+    	//current : 처리 대상 노드, 현재 역순 처리할 노드
+        //pre : 이미 역순으로 변경된 노드, 처리 중인 노드 앞 노드, 완료 후 처리 중인 노드 뒷 노드가 됨
+    	ListNode next=head;
+    	ListNode current = null;
+    	ListNode pre = null;
+    	while(next!=null) {
+    		pre=current;
+    		current=next;
+    		next=next.link;
+    		current.link=pre;
+    	}
+    	head= current;
+    }
+    public void printList() {
+    	ListNode temp = this.head;
+		System.out.printf("L = (");
+		while(temp != null){
+			System.out.printf(temp.getData());
+			temp = temp.link;
+			if(temp != null){
+				System.out.printf(", ");
+			}			
+		}
+		System.out.println(")");
+    }
+}
