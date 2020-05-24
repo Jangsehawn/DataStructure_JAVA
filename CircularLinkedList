@@ -1,0 +1,71 @@
+package data_structure_practice;
+
+public class CircularList {
+	public static void main(String args[]) {
+		Circular L = new Circular();
+		L.insertLastNode("월");
+		CircularNode pre = L.searchNode("월"); 
+		L.insertMiddleNode(pre,"수");
+		L.insertMiddleNode(pre.link,"일");
+		L.printList();
+	}
+}
+class CircularNode{
+	private String data;
+    public CircularNode link;
+    public CircularNode(String data, CircularNode link) {
+    	this.data=data;
+    	this.link=link;
+    }
+    public CircularNode(String data) {
+    	this.data=data;
+    	this.link=null;
+    }
+    public String getData() {
+    	return this.data;
+    }
+}
+class Circular{
+	private CircularNode head;
+	public Circular() {
+		head=null;
+	}
+	public void insertMiddleNode(CircularNode pre,String data ) {
+		CircularNode newNode = new CircularNode(data);
+		newNode.link=pre.link;
+		pre.link=newNode;
+	}
+	public void insertLastNode( String data) {
+		CircularNode newNode = new CircularNode(data);
+		if(head==null) {
+			this.head=newNode;
+		}
+		else {
+			CircularNode temp = head;
+			while(temp.link!=head) temp =temp.link;
+			temp.link=newNode;
+			temp.link.link=head;
+		}
+	}
+	public CircularNode searchNode(String data) {
+		CircularNode temp=this.head;
+		while(temp.link!=head) {//
+			if(data==temp.getData())
+				return temp;
+			else temp = temp.link;
+		}
+		return temp;
+	}
+	public void printList(){
+		CircularNode temp = this.head;
+		System.out.printf("L = (");
+		while(temp.link!=head){
+			System.out.printf(temp.getData());
+			temp = temp.link;
+			if(temp != null){
+				System.out.printf(", ");
+			}			
+		}
+		System.out.println(")");
+	}
+}
