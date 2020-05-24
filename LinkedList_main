@@ -1,0 +1,22 @@
+public class Node {
+	public static void main(String args[]) {
+		LinkedList L =new LinkedList();
+		L.insertLastNode("안녕");
+		L.insertLastNode("hello");
+		L.insertLastNode("java");
+		L.printList();
+		ListNode pre =L.searchNode("자바");
+		if(pre==null)
+			System.out.println("없어");
+		else {
+			L.insertMiddleNode(pre,"python");
+			L.printList();
+		}
+	    System.out.println("쓸데없이 순서 역순으로 바꾸기");
+	    L.reverseList();
+        L.printList();
+        System.out.println("마지막 노드 삭제");
+        L.deletelastNode();
+        L.printList();
+    }
+}
