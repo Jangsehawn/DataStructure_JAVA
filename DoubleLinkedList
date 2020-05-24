@@ -1,0 +1,78 @@
+package data_structure_practice;
+
+public class DoubleLinkedList {
+
+	public static void main(String[] args) {
+		
+	}
+}
+class DoubleLinked{
+	private String data;
+	public DoubleLinked rlink;
+	public DoubleLinked llink;
+	public DoubleLinked() {
+		this.data=null;
+		this.rlink=null;
+		this.llink=null;
+	}
+    public DoubleLinked(String data) {
+		this.data=data;
+		this.rlink=null;
+		this.llink=null;
+	}
+    public DoubleLinked(String data,DoubleLinked rlink,DoubleLinked llink) {
+		this.data=null;
+		this.rlink=rlink;
+		this.llink=llink;
+	}
+    public String getData(){
+    	return this.data;
+    }
+}
+
+class Double{
+	private DoubleLinked head;
+	public Double() {
+		head=null;
+	}
+	public void insertMiddleNode(DoubleLinked pre, String data) {
+		DoubleLinked newNode = new DoubleLinked(data);
+	//pre->  pre - new - ~~~  -> pre 뒤에 삽입  
+		newNode.rlink=pre.rlink;//pre의 우링크를 new의 우링크에 삽입 
+		pre.rlink=newNode;//pre의 우링크에 new의 주소 대입
+		newNode.llink=pre;//new의 좌링크에 pre의 주소 대입
+		newNode.rlink.llink=newNode;//new의 오른쪽노드의 좌링크에 new주소 대입
+	}
+	public void insertLastNode(String data) {
+		DoubleLinked newNode = new DoubleLinked(data);
+		if(head == null){
+			this.head = newNode;
+		}
+		else{
+			DoubleLinked temp = head;
+			while(temp.rlink != null) temp = temp.rlink;
+			temp.rlink = newNode;
+			newNode.llink=temp;
+		}
+	}
+	public void deleteNode() {
+		DoubleLinked pre,temp;//temp->삭제하고 싶은 노드
+		pre=head;
+		temp=head.rlink;
+		while(temp.rlink!=null) {
+			pre=temp;
+			temp=temp.rlink;
+		}
+		temp.llink.rlink=temp.rlink;
+		temp.rlink.llink=temp.llink;
+	}
+	public DoubleLinked searchNode(String data){
+		DoubleLinked temp = this.head;
+		while(temp != null){
+			if(data == temp.getData())  
+				return temp;
+			else temp = temp.rlink;
+		}
+		return  temp;
+	}
+}
