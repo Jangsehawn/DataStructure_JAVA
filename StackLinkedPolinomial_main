@@ -1,0 +1,31 @@
+package data_structure;
+
+public class Ex7_3_m {
+	public static void main(String args[]){
+		OptExp opt = new OptExp();
+//		String exp = "(3*5)-(6/2)";
+		String exp;
+		exp = "3+4*5/2-8";
+		char postfix[];
+		int value;
+		System.out.println(exp);
+		if(opt.testPair(exp))
+			System.out.println("占쏙옙호 占쏙옙占�!");
+		else 
+			System.out.println("占쏙옙호 틀占쏙옙!!!");			
+						
+		System.out.printf("\n占쏙옙占쏙옙표占쏙옙占� : ");
+		postfix = opt.toPostfix(exp);
+		System.out.println(postfix);
+		
+	//--------------------------
+		
+		OptExp2 opt2 = new OptExp2();
+		int result;
+//		String exp2 = "35*62/-";	
+		String exp2 = new String(postfix);	
+		System.out.printf("\n2. 占쏙옙占쏙옙표占쏙옙占� : %s", exp2);
+		result = opt2.evalPostfix(exp2);
+		System.out.printf("\n2. 占쏙옙占쏙옙占쏙옙 =  %d\n", result);		
+	}
+}
