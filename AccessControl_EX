@@ -1,0 +1,39 @@
+class Ex_AccessControl_1{
+    public static void main(String args[]){
+	AccessControl_1  test1 = new AccessControl_1(10, 20);
+	System.out.println("sum = " + test1.getSum());
+	System.out.println("average = " + test1.getAve());
+    }
+}
+class Ex_AccessControl_2{
+    public static void main(String args[]){
+    	AccessControl_1  test1 = new AccessControl_1(10, 20);
+    	System.out.println("sum = " + test1.getSum());
+    	System.out.println("average = " + test1.getAve());
+
+	AccessControl_2  test2 = new AccessControl_2(10, 20);
+	System.out.println("sum = " + test2.getSum());
+	System.out.println("average = " + test2.getAve());
+    }
+    class Ex_AccessControl_3{
+    public static void main(String args[]){
+	AccessControl_3  test3 = new AccessControl_3(10, 20);
+	System.out.println("sum = " + test3.getSum());
+	System.out.println("average = " + test3.getAve());
+    }
+}
+class Ex_AccessControl_4{
+    public static void main(String args[]){
+    	AccessControl_1  test1 = new AccessControl_1(10, 20);
+    	System.out.println("sum = " + test1.getSum());
+    	System.out.println("average = " + test1.getAve());
+    	System.out.println("sum = " + test1.sum);
+    	System.out.println("average = " + test1.ave);
+
+	AccessControl_2  test2 = new AccessControl_2(10, 20);
+	System.out.println("sum = " + test2.getSum());
+	System.out.println("average = " + test2.getAve());
+	System.out.println("sum = " + test2.sum);
+	System.out.println("average = " + test2.ave);
+    }
+}
