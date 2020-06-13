@@ -1,0 +1,146 @@
+package data_structure_practice;
+
+public class PolynomialLinkedList {
+
+	public static void main(String[] args) {
+		
+//		CalculationPolynomial cp = new CalculationPolynomial();
+		
+		Polynomial A =new Polynomial();
+		A.insertNode(4,3);
+		A.insertNode(3,2);
+		A.insertNode(5,1);
+		A.printList();
+		
+		Polynomial B = new Polynomial();
+		B.insertNode(3,4);
+		B.insertNode(1,3);
+		B.insertNode(2,1);
+		B.printList();
+		
+		Polynomial c = CalculationPolynomial.addPolynomial(A, B);
+		
+		c.printList();
+		Polynomial d = CalculationPolynomial.minusPolynomial(A, B);
+		
+		d.printList();
+						
+	}
+	
+	static Polynomial addPolynomial(Polynomial A, Polynomial B) {
+		PolyNode a = A.head;
+		PolyNode b = B.head;
+		Polynomial c= new Polynomial();
+		while(a!=null && b!=null) {
+			if(a.getExpo()<b.getExpo()) {
+				c.insertNode(b.coef, b.expo );
+				b=b.link;
+			}else if( a.getExpo()>b.getExpo()) {
+				c.insertNode(a.coef, a.expo);
+				a=a.link;
+			}else {
+				c.insertNode(a.coef+b.coef,a.expo);
+				a=a.link;
+				b=b.link;
+			}
+		}
+		return c;
+	}
+
+}
+class PolyNode{
+	int coef;
+	int expo;
+	public PolyNode link;
+	
+	public PolyNode() {
+		this.link= null;
+	}
+	public PolyNode(int coef,int expo) {
+		this.coef=coef;
+		this.expo=expo;
+		this.link=null;
+	}
+	public PolyNode(int coef,int expo,PolyNode link) {
+		this.coef=coef;
+		this.expo=expo;
+		this.link=link;
+	}
+	public float getCoef() {
+		return this.coef;
+	}
+	public int getExpo() {
+		return this.expo;
+	}
+	
+}
+class Polynomial{
+	PolyNode head;
+	public Polynomial() {
+		head=null;
+	}
+	
+	
+	public void insertNode(int coef, int expo) {
+		PolyNode node= new PolyNode(coef,expo);
+		if(head==null) {
+			this.head=node;
+		}else {
+			PolyNode temp= head;
+			while(temp.link!=null) temp=temp.link;
+			temp.link=node;
+		}
+	}
+	public void printList() {
+		PolyNode temp= this.head;
+		while(temp.link!=null) {
+			System.out.print(temp.getCoef()+"X^"+temp.getExpo()+"+");
+			temp=temp.link;
+		}
+		System.out.print(temp.getCoef()+"X^"+temp.getExpo());
+		System.out.println();
+	}
+}
+
+class CalculationPolynomial {
+	
+	public static Polynomial addPolynomial(Polynomial A, Polynomial B) {
+		PolyNode a = A.head;
+		PolyNode b = B.head;
+		Polynomial c= new Polynomial();
+		while(a!=null && b!=null) {
+			if(a.getExpo()<b.getExpo()) {
+				c.insertNode(b.coef, b.expo );
+				b=b.link;
+			}else if( a.getExpo()>b.getExpo()) {
+				c.insertNode(a.coef, a.expo);
+				a=a.link;
+			}else {
+				c.insertNode(a.coef+b.coef,a.expo);
+				a=a.link;
+				b=b.link;
+			}
+		}
+		return c;
+	}
+	public static Polynomial minusPolynomial(Polynomial A, Polynomial B) {//A-B
+		PolyNode a = A.head;
+		PolyNode b = B.head;
+		Polynomial c= new Polynomial();
+		while(a!=null && b!=null) {
+			if(a.getExpo()<b.getExpo()) {
+				c.insertNode(-b.coef, b.expo );
+				b=b.link;
+			}else if( a.getExpo()>b.getExpo()) {
+				c.insertNode(a.coef, a.expo);
+				a=a.link;
+			}else {
+				c.insertNode(a.coef-b.coef,a.expo);
+				a=a.link;
+				b=b.link;
+			}
+		}
+		return c;
+	}
+	
+}
