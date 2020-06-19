@@ -1,0 +1,339 @@
+package data_structure_practice;
+
+
+
+//<후위표기법 변환>
+//스택내의 연산자와 새로 읽은 연산자의 우선순위 비교
+//
+//1)스택내의 연산자>= 새로 읽은 연산자
+//스택내 먼저 출력후(pop) 새로운 연산자 push
+//
+//2) 스택내의 연산자<새로 읽은 연산자
+//새로운 연산자 push
+//
+//괄호처리
+//
+//1) 왼쪽 괄호는 무조건 스택에 push(삽입)
+//2) 삽입된 괄호는 우선순위 제일 낮음
+//3) 왼쪽 괄호 다음 연산자는 무조건 push
+//4) 오른쪽 괄호를 만나면 왼쪽 괄호가 사라질때까지 pop
+// 
+//null읽기-> 수식의 마지막으로 스택이 empty 될때까지 pop
+//
+//
+//<후위표기법 계산>
+//
+//피연산자 삽입
+//연산자 만날시 앞의 두개 숫자 계산후 삽입
+
+public class StackPostfixCalculation {
+
+	public static void main(String[] args) {
+		OptExp opt =new OptExp();
+		String exp="(2+3*5/5-7)+4*9";//"(3*5-(6/2)"
+		
+		char postfix[];
+		int value;
+		System.out.println(exp);
+		System.out.printf("\n 후위표기식 :");
+		postfix=opt.toPostfix(exp);
+		System.out.println(postfix);
+		System.out.printf("\n 후위표기식 계산결과 :");
+
+		System.out.println();
+		//System.out.println(String.valueOf(postfix));
+		
+		System.out.println(opt.CalPostfix(postfix));
+		//System.out.println( '4'+3  );
+	}
+
+}
+
+interface Stack{
+	boolean isEmpty();
+	void push(char item);
+	char pop();
+	char peek();
+	int len();
+}
+
+class StackNode{
+	char data;
+	StackNode link;
+}
+
+class LinkedStack implements Stack{
+	private StackNode top;
+	
+	public boolean isEmpty() {
+		return(top==null);
+	}
+	
+	public void push(char item) {
+		StackNode newNode = new StackNode();
+		newNode.data=item;
+		newNode.link=top;
+		top=newNode;
+	}
+	
+	public char pop(){
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			return 0;
+		}
+		else {
+			char item = top.data;
+			top=top.link;
+			return item;
+		}
+	}
+	
+	public void delete() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			
+		}
+		else {
+			top=top.link;
+		}
+	}
+	
+	public char peek() {
+		if(isEmpty()) {
+			System.out.println("Peeking fail! LinkedStack is empty!");
+			return 0;
+		}
+		else
+			return top.data; 
+	}
+	
+	public void printStack() {
+		if(isEmpty()) {
+			System.out.println("Linked Stack is empty!! %n %n");
+		}
+		else {
+			StackNode temp =top;
+			System.out.println("Linked Stack>>");
+			while(temp!=null) {
+				System.out.printf("\t %c \n",temp.data);
+				temp=temp.link;
+			}
+			System.out.println();
+		}
+	}
+}
+
+interface Stack2{
+	boolean isEmpty();
+	void push(int item);
+	int pop();
+	int peek();
+	int len();
+}
+
+class StackNode2{
+	int data;
+	StackNode2 link;
+}
+
+class LinkedStack2 implements Stack2{
+	private StackNode2 top;
+	
+	public boolean isEmpty() {
+		return(top==null);
+	}
+	
+	public void push(int item) {
+		StackNode2 newNode = new StackNode2();
+		newNode.data=item;
+		newNode.link=top;
+		top=newNode;
+	}
+	
+	public int pop(){
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			return 0;
+		}
+		else {
+			int item = top.data;
+			top=top.link;
+			return item;
+		}
+	}
+	
+	public void delete() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			
+		}
+		else {
+			top=top.link;
+		}
+	}
+	
+	public int peek() {
+		if(isEmpty()) {
+			System.out.println("Peeking fail! LinkedStack is empty!");
+			return 0;
+		}
+		else
+			return top.data; 
+	}
+	
+	public void printStack() {
+		if(isEmpty()) {
+			System.out.println("Linked Stack is empty!! %n %n");
+		}
+		else {
+			StackNode2 temp =top;
+			System.out.println("Linked Stack>>");
+			while(temp!=null) {
+				System.out.printf("\t %c \n",temp.data);
+				temp=temp.link;
+			}
+			System.out.println();
+		}
+	}
+}
+class OptExp{
+	private String exp;
+	private String expcal;
+	private int expSize;
+	private char testCh, openPair,testChCal;
+	
+	public char[] toPostfix(String infix) {//char[] : char형태의 배열로 반환한다
+		char testCh;
+		exp = infix;
+		int expSize = infix.length();
+		int j=0;
+		int count = 0;
+		
+		char postfix[] =new char[100];
+		LinkedStack S =new LinkedStack();
+		for(int i=0; i<expSize; i++){
+			testCh = this.exp.charAt(i);
+			switch(testCh) {
+			case '0':
+			case '1':
+			case '2':	
+			case '3':	
+			case '4':	
+			case '5':	
+			case '6':	
+			case '7':	
+			case '8':	
+			case '9':
+				count = 0;
+				postfix[j++]=testCh;
+				break;
+				
+			case '-':
+				count++;
+				if(count >= 2) {
+					S.push(testCh);//피연산자가 음수인 경우 처리
+					postfix[j++]=0;
+				} else {
+					while(!S.isEmpty() && (S.peek() == '*' || S.peek() == '/')) {
+						postfix[j++] = S.pop();
+					}
+					S.push(testCh);
+				}
+				break;
+					
+			case '+':
+				count++;
+				while(!S.isEmpty() && (S.peek() == '*' || S.peek() == '/')) {
+					postfix[j++] = S.pop();
+				}
+				S.push(testCh);
+				break;
+				
+			case '*':
+			case '/':
+				count++;
+				S.push(testCh);
+				break;
+				
+			case '(':
+				S.push(testCh);
+				break;
+				
+			case ')':
+				
+				
+				while(S.peek() !='(') {
+					postfix[j++]=S.pop();
+				}
+				S.pop();//'('제거
+				
+				break;
+				
+			default:	
+				
+			}
+		}
+		while(!S.isEmpty() ) {
+			postfix[j++]=S.pop();
+		}
+		
+		return postfix;
+	}
+	
+//	public int CalPostfix(char[] post) {
+//		int answer = 0;
+//		String stringPost = new String(post).trim();
+//		int stringSize = stringPost.length();
+//		
+//		answer = stringPost.charAt(0) - 48;
+//		for(int i=1; i<stringSize; i++) {
+//			switch(stringPost.charAt(i)) {
+//				case '+' :
+//					break;
+//				case '-' :
+//					break;
+//				case '*' :
+//					break;
+//				case '/' :
+//					break;
+//				default :
+//					break;
+//			}
+//		}
+//		return answer;
+//	}
+	
+  public int CalPostfix(char[] post) {
+  
+    expcal=new String(post).trim();
+    expSize = expcal.length();
+	char testChCal;
+	LinkedStack2 S = new LinkedStack2();
+	for(int i=0; i<expSize; i++){
+		testChCal = this.expcal.charAt(i);
+		switch(testChCal) {
+			case '+':
+				S.push(S.pop()+S.pop());
+				break; 
+			case '-':
+				int a2 = S.pop();
+				int b2 = S.pop();
+				S.push(b2-a2);
+				break; 
+			case '*':
+				S.push(S.pop()*S.pop());
+				break;  
+			case '/':
+				int a = S.pop();
+				int b = S.pop();
+				S.push(b/a);
+				break;  
+			default :
+				S.push(testChCal-48);
+				break;
+		}
+	}
+	
+	return S.pop();
+  }
+}
