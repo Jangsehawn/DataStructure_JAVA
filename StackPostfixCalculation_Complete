@@ -1,0 +1,279 @@
+
+
+
+//<후위표기법 변환>
+//스택내의 연산자와 새로 읽은 연산자의 우선순위 비교
+//
+//1)스택내의 연산자>= 새로 읽은 연산자
+//스택내 먼저 출력후(pop) 새로운 연산자 push
+//
+//2) 스택내의 연산자<새로 읽은 연산자
+//새로운 연산자 push
+//
+//괄호처리
+//
+//1) 왼쪽 괄호는 무조건 스택에 push(삽입)
+//2) 삽입된 괄호는 우선순위 제일 낮음
+//3) 왼쪽 괄호 다음 연산자는 무조건 push
+//4) 오른쪽 괄호를 만나면 왼쪽 괄호가 사라질때까지 pop
+// 
+//null읽기-> 수식의 마지막으로 스택이 empty 될때까지 pop
+//
+//
+//<후위표기법 계산>
+//
+//피연산자 삽입
+//연산자 만날시 앞의 두개 숫자 계산후 삽입
+
+public class StackPostfixCalculation {
+
+	public static void main(String[] args) {
+		String exp="3 + 9 - 7 * -5 + 2 + 6 / 3";
+		System.out.println(exp);
+		
+		OptExp opt = new OptExp();
+		
+		String postfix = opt.toPostfix(exp);
+		System.out.printf("\n 후위표기식 : %s \n", postfix);
+		
+
+		int result = opt.CalPostfix(postfix);
+		System.out.printf("\n 후위표기식 계산결과 : %d \n", result);
+	}
+
+}
+
+interface Stack{
+	boolean isEmpty();
+	void push(char item);
+	char pop();
+	char peek();
+}
+
+class StackNode{
+	char data;
+	StackNode link;
+}
+
+class LinkedStack implements Stack{
+	private StackNode top;
+	
+	public boolean isEmpty() {
+		return(top==null);
+	}
+	
+	public void push(char item) {
+		StackNode newNode = new StackNode();
+		newNode.data=item;
+		newNode.link=top;
+		top=newNode;
+	}
+	
+	public char pop(){
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			return 0;
+		}
+		else {
+			char item = top.data;
+			top=top.link;
+			return item;
+		}
+	}
+	
+	public void delete() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			
+		}
+		else {
+			top=top.link;
+		}
+	}
+	
+	public char peek() {
+		if(isEmpty()) {
+			System.out.println("Peeking fail! LinkedStack is empty!");
+			return 0;
+		}
+		else
+			return top.data; 
+	}
+	
+	public void printStack() {
+		if(isEmpty()) {
+			System.out.println("Linked Stack is empty!! %n %n");
+		}
+		else {
+			StackNode temp =top;
+			System.out.println("Linked Stack>>");
+			while(temp!=null) {
+				System.out.printf("\t %c \n",temp.data);
+				temp=temp.link;
+			}
+			System.out.println();
+		}
+	}
+}
+
+interface Stack2{
+	boolean isEmpty();
+	void push(int item);
+	int pop();
+	int peek();
+}
+
+class StackNode2{
+	int data;
+	StackNode2 link;
+}
+
+class LinkedStack2 implements Stack2{
+	private StackNode2 top;
+	
+	public boolean isEmpty() {
+		return(top==null);
+	}
+	
+	public void push(int item) {
+		StackNode2 newNode = new StackNode2();
+		newNode.data=item;
+		newNode.link=top;
+		top=newNode;
+	}
+	
+	public int pop(){
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			return 0;
+		}
+		else {
+			int item = top.data;
+			top=top.link;
+			return item;
+		}
+	}
+	
+	public void delete() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Stack is empty!!");
+			
+		}
+		else {
+			top=top.link;
+		}
+	}
+	
+	public int peek() {
+		if(isEmpty()) {
+			System.out.println("Peeking fail! LinkedStack is empty!");
+			return 0;
+		}
+		else
+			return top.data; 
+	}
+	
+	public void printStack() {
+		if(isEmpty()) {
+			System.out.println("Linked Stack is empty!! %n %n");
+		}
+		else {
+			StackNode2 temp =top;
+			System.out.println("Linked Stack>>");
+			while(temp!=null) {
+				System.out.printf("\t %c \n",temp.data);
+				temp=temp.link;
+			}
+			System.out.println();
+		}
+	}
+}
+
+class OptExp{
+	
+	public String toPostfix(String infix) {//char[] : char형태의 배열로 반환한다
+		String[] arr = infix.split(" ");
+		int count = 0;
+		String postfix = "";
+		Stack s = new LinkedStack();
+		
+		for(int i=0; i<arr.length; i++) {
+			switch(arr[i]) {
+				case "+" :
+					while(!s.isEmpty() && (s.peek() == '*' || s.peek() == '/' || s.peek() == '-')) {
+						postfix = postfix + s.pop() + " ";
+					}
+					s.push(arr[i].charAt(0));
+					count++;
+					break;
+				case "-" :
+					while(!s.isEmpty() && (s.peek() == '*' || s.peek() == '/')) {
+						postfix = postfix + s.pop() + " ";
+					}
+					s.push(arr[i].charAt(0));
+					count++;
+					break;
+				case "*" :
+				case "/" :
+					s.push(arr[i].charAt(0));
+					count++;
+					break;
+				case "(" :
+					s.push(arr[i].charAt(0));
+					break;
+				case ")" :
+					while(s.peek() != '(') {
+						postfix = postfix + s.pop() + " ";
+					}
+					s.pop();
+					break;
+				default :
+					postfix = postfix + arr[i] +" ";
+					count = 0;
+					break;
+			}
+		}
+		while(!s.isEmpty()) {
+			postfix = postfix + s.pop() + " ";
+		}
+		return postfix; 
+	}
+	
+
+	
+  public int CalPostfix(String postfix) {
+	  String[] arr = postfix.split(" ");
+	  Stack2 s = new LinkedStack2();
+	  int n1 = 0;
+	  int n2 = 0;
+	  
+	  for(int i=0; i<arr.length; i++) {
+		  switch(arr[i]) {
+			case "+" :
+				n1 = s.pop();
+				n2 = s.pop();
+				s.push(n2 + n1);
+				break;
+			case "-" :
+				n1 = s.pop();
+				n2 = s.pop();
+				s.push(n2 - n1);
+				break;
+			case "*" :
+				n1 = s.pop();
+				n2 = s.pop();
+				s.push(n2 * n1);
+				break;
+			case "/" :
+				n1 = s.pop();
+				n2 = s.pop();
+				s.push(n2 / n1);
+				break;
+			default :
+				s.push(Integer.parseInt(arr[i]));
+				break;
+		}
+	  }
+	  
+	  return s.pop();
+  }
