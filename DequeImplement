@@ -1,0 +1,196 @@
+package data_structure_practice;
+
+public class DequeImplement {
+
+	public static void main(String[] args) {
+		char deletedItem;
+		DQueue DQ = new DQueue();
+		
+		DQ.insertFront('A');
+		DQ.printDQueue();
+		
+		DQ.insertFront('B');
+		DQ.printDQueue();
+		
+		DQ.insertFront('C');
+		DQ.printDQueue();
+		
+		deletedItem = DQ.deleteFront();
+		if(deletedItem!=0) {
+			System.out.println("Front delted Item : "+deletedItem);	
+		}
+		DQ.printDQueue();
+		
+		deletedItem =DQ.deleteRear();
+		if(deletedItem!=0) {
+			System.out.println("Front delted Item : "+deletedItem);	
+		}
+		DQ.printDQueue();
+		
+		DQ.insertFront('D');
+		DQ.printDQueue();
+		
+		DQ.insertRear('E');
+		DQ.printDQueue();
+	}
+
+}
+
+//Deque=Double-ended Queue, 양쪽끝에서 삽입과 삭제가 가능함 (스택과 큐의 성질을 다 가짐)
+// Duble LinkedList 사용
+class DQNode{
+	char data;
+	DQNode rlink;
+	DQNode llink;
+}
+
+class DQueue{
+	DQNode front;
+	DQNode rear;
+
+	public DQueue() {
+		front=null;//데이터가 없으므로 front, rear에 null 대입
+		rear=null;
+	}
+	
+	public boolean isEmpty() {
+		return (front==null);//front가 null일경우 비어있는것
+	}
+	
+	public void insertFront(char item) {
+		DQNode newNode =new DQNode();
+		newNode.data=item;//노드에 데이터 삽입
+		if(isEmpty()) {//빈 덱일경우
+			front=newNode;//front,rear에 주소값 삽입
+			rear=newNode;
+			newNode.rlink=null;//r,l링크에 null값 대입
+			newNode.llink=null;
+		}else {//빈 덱이 아닐 경우
+			front.llink=newNode;//front의 앞에 newnode주소값으로 연결
+			newNode.rlink=front;//newnode의 rlink에 front 연결
+			newNode.llink=null; //노드의 맨 왼쪽이므로 null값
+			front=newNode;//
+		}
+		System.out.println("Front Inserted Item"+item);
+	}
+	
+	public void insertRear(char item) {
+		DQNode newNode = new DQNode();
+		newNode.data=item;
+		if(isEmpty()) {
+			front=newNode;
+			rear=newNode;
+			newNode.rlink=null;
+			newNode.llink=null;
+		}else {
+			rear.rlink=newNode;
+			newNode.rlink=null;
+			newNode.llink=rear;
+			rear=newNode;
+		}
+		System.out.println("Rear Inserted Item:"+item);
+	}
+	
+	public char deleteFront() {
+		if(isEmpty()) {
+			System.out.println("Front Deleting fail! DQueue is empty!!");
+			return ' ';
+		}else {
+			char item =front.data;//front가 가리키는 데이터
+			if(front.rlink==null) {
+				front=null;
+				rear=null;
+			}else {
+				front=front.rlink;//front를 오른쪽 노드로 이동
+				front.llink=null;//front의 왼쪽 연결 끊어줌
+			}
+			return item;
+		}
+	
+	}
+	
+	public char deleteRear() {
+		if(isEmpty()) {
+			System.out.println("Rear Deleting fail! DQueue is empty!");
+			return ' ';
+		}else {
+			char item =rear.data;
+			if(rear.llink==null) {
+				rear=null;
+				front=null;
+			}else {
+				rear=rear.llink;
+				rear.rlink=null;
+			}
+			return item;
+		}
+	}
+	
+	public void removeFront() {
+		if(isEmpty()) {
+			System.out.println("Front Removing fail! DQueue is empty!!");
+		}else {
+			if(front.rlink==null) {
+				front=null;
+				rear=null;
+			}else {
+				front=front.rlink;
+				front.llink=null;
+			}
+		}
+	}
+	
+	
+	public void removeRear() {
+		if(isEmpty()) {
+			System.out.println("Rear Removing fail! DQueue is empty!");
+		}else {
+			if(rear.llink==null) {
+				rear=null;
+				front=null;
+			}else {
+				rear=rear.llink;
+				rear.rlink=null;
+			}
+		}
+	}
+	
+	
+	
+	public char peekFront() {
+		if(isEmpty()) {
+			System.out.println("Front Peeking fail! DQueue is empty!");
+			return ' ';
+		}else {
+			return front.data;
+		}
+		
+	}
+	
+	public char peekRear() {
+		if(isEmpty()) {
+			System.out.println("Rear Peeking fail! DQueue is empty!!");
+			return ' ';
+		}else {
+			return rear.data;
+		}
+			
+	}
+	
+	public void printDQueue() {
+		if(isEmpty()) {
+			System.out.println("DQueue is empty!! %n %n");
+		}else {
+			DQNode temp=front;
+			System.out.printf("DQueue>>");
+			while(temp !=null) {
+				System.out.printf("%c", temp.data);
+				temp=temp.rlink;
+			}
+			System.out.println();System.out.println();;
+		}
+	}
+	
+	
+	
+}
