@@ -1,0 +1,137 @@
+package data_structure_practice;
+
+public class LinkedQueueImplement {
+
+	public static void main(String[] args) {
+		char deletedItem;
+		LinkedQueue LQ=new LinkedQueue();
+		
+		LQ.enQueue('A');
+		LQ.printQueue();
+		
+		LQ.enQueue('B');
+		LQ.printQueue();
+		
+		deletedItem = LQ.deQueue();
+		if(deletedItem!=0) {
+			System.out.println("deleted Item:"+deletedItem);
+		}
+		LQ.printQueue();
+		
+		LQ.enQueue('C');
+		LQ.printQueue();
+		
+		deletedItem =LQ.deQueue();
+		if(deletedItem!=0) {
+			System.out.println("deleted Item:"+deletedItem);
+		}
+		LQ.printQueue();
+		
+		
+		
+	
+	}
+
+}
+
+interface Queue {
+	boolean isEmpty();
+	void enQueue(char item);
+	char deQueue();
+	void delete();
+	char peek();
+}
+
+class QNode {// LInkedList를 사용하므로 노드구성
+	char data;
+	QNode link;
+}
+
+class LinkedQueue implements Queue{
+	QNode front;
+	QNode rear;
+	int size;
+	
+	public LinkedQueue() {
+		front=null;//자료없을때 null로 지정
+		rear=null;
+		size = 0;
+	}
+	
+	public boolean isEmpty() {
+		if(size == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void enQueue(char item) {
+		QNode newNode = new QNode();//노드 생성
+		newNode.data=item; // 노드에 데이터 삽입
+		newNode.link=null;
+		if(isEmpty()) {//빈 큐일경우
+			front=newNode;// 데이터가 들어간 노드의 주소값을 front,rear에 넣음
+			rear=newNode;
+		}else {//빈 큐가 아닐경우
+			rear.link=newNode;//rear의 링크에 새 노드 주소값 연결
+			rear=newNode;//rear에 새노드 주소값 넣음
+		}
+		size++;
+		System.out.println("Inserted Item:"+item);
+	}
+	
+	public char deQueue() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Queue is empty");
+			return ' ';
+		}else{
+			char item =front.data;//front가 가리키는 노드의 데이터를 참조변수 item에 대입
+			front =front.link;//front에 front 다음 노드의 주소값 대입
+			if(front==null) {//노드가 하나뿐이라 front가 null이 되면 rear에도 null값 대입
+				rear=null;
+			}
+			size--;
+			return item;
+		}
+	}
+	
+	public void delete() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Linked Queue is empty!");
+			return;
+		} else {
+			front =front.link;
+			if(front ==null) {
+				rear=null;
+			}
+			size--;
+		}
+	}
+	
+	public char peek() {
+		if(isEmpty()) {
+			System.out.println("Peeking fail! Linked Queue is empty!!");
+			return ' ';
+		}else {
+			return front.data;
+		}
+	}
+	
+	public void printQueue() {
+		if(isEmpty()) {
+			System.out.println("Linkede Queue is empty! %n %n");
+		}else {
+			QNode temp =front;//참조면수 temp에 front 대입
+			System.out.println("Linked Queue>>");
+			while(temp!=null) {//front가 null이 아닐때까지 프린트
+				System.out.printf("%c \n", temp.data);
+				temp=temp.link;
+			}
+			System.out.println("size : " + size);
+			System.out.println();System.out.println();
+			
+		}
+	}
+	
+}
