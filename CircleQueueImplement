@@ -1,0 +1,112 @@
+package data_structure_practice;
+
+public class CircleQueue {
+
+	public static void main(String[] args) {
+		int queueSize=4;
+		char deletedItem;
+		ArrayCQueue cQ=new ArrayCQueue(queueSize);
+		cQ.enQueue('A');
+		cQ.printQueue();
+		cQ.enQueue('B');
+		cQ.printQueue();
+		
+		deletedItem=cQ.deQueue();
+		if(deletedItem !=0) {
+			System.out.println("deleted Item: "+deletedItem);
+		}
+		cQ.printQueue();
+		
+
+	}
+
+}
+
+interface Queue{
+	boolean isEmpty();
+	void enQueue(char item);
+	char deQueue();
+	void delete();
+	char peek();
+}
+
+class ArrayCQueue implements Queue{
+	private int front;
+	private int rear;
+	private int queueSize;
+	private char itemArray[];
+	
+	public ArrayCQueue(int queueSize) {
+		front=0;//원형 큐 이므로 front, rear을 0으로 초기화
+		rear=0;
+		this.queueSize=queueSize;//객체네 변수를 입력하기 위해 this가 필요
+		itemArray = new char[queueSize];//queuesize만큼 char[]생성
+	}
+	
+	public boolean isEmpty() {
+		return (front==rear);//front=rear이면 빈 큐
+	}
+	
+	public boolean isFull() {
+		return (((rear+1)%this.queueSize)==front);// %: 나눈후 나머지
+	}// front, rear이 움직이며 바뀌는데 한바퀴차이날때기 헤강경우
+	
+	public void enQueue(char item) {
+		if(isFull()) {//포화상태가 아닐때 삽입 가능
+			System.out.println("Inserting fail! Array Circular Queue is full!");
+		}else {
+			rear=(rear+1)%this.queueSize;//원형이므로 나머지를 이용해서 넣어줘야함
+			//ex) 크기가 5원 큐에서 rear이 2일때-> (2+1)%5=3
+			//ex) 크기가 5원 큐에서 rear이 4일때-> (4+1)%5=0 ->이 경우 때문에 나머지로 넣어줌
+			itemArray[rear]=item;
+			System.out.println("Inserted Item:"+item);
+		}
+	}
+	
+	public char deQueue() {
+		if(isEmpty()) {//비어있는 상태가 아닐떄 삭제가능
+			System.out.println("Deleting fail! Array Circular Queue is empty!!");
+			return 0;
+		}else {
+			front=(front+1)%this.queueSize;//원형이므로 나머지를 이용해서 넣어줘야함
+			//ex) 크기가  4인 큐에서의 삭제
+			// [0]   [1] [2] [3]
+			//front  'A' 'B' 'C' , rear=3
+			// dequeue
+			//front= (0+1)%4=1
+ 			return itemArray[front];
+		}
+			
+	}
+	
+	public void delete() {
+		if(isEmpty()) {
+			System.out.println("Deleting fail! Array Circular Queue is empty!!");
+		}else {
+			front = (front+1)% this.queueSize;
+		}
+	}
+	
+	public char peek() {
+		if(isEmpty()) {
+			System.out.println("Peeking fail! Array Circular Queue is empty!!");
+			return ' ';
+		}else {
+			return itemArray[(front+1)%this.queueSize];
+			//front 앞에 있는게 맨앞! 
+		}
+	}
+	
+	public void printQueue() {
+		if(isEmpty()) { 
+			System.out.println("Array Circular Queue is empty!!");
+		}else {
+			System.out.printf("Array circular Queue>>");
+			for(int i=(front+1)%this.queueSize;i!=(rear+1)%this.queueSize;i=++i%this.queueSize ) {
+				System.out.printf("%c",itemArray[i]);
+			}
+			System.out.println();System.out.println();
+		}
+	}
+	
+}
